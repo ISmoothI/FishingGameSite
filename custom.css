@@ -1,0 +1,12 @@
+body{
+    background: rgb(245, 185, 89);
+}
+canvas{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* #leftsidebar{
+    color: blueviolet;
+    float: left;
+} */
