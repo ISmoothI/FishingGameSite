@@ -1,7 +1,15 @@
 /**
- * @todo 
+ * @todo MAJOR
+ * Destroy Bass when Rod intereacts with Fish class and add new Bass
  * 
- * @todo Remove viewHitArea method declarations in constructors
+ * 
+ * @todo MINOR
+ * Remove viewHitArea method declarations in constructors
+ * Change Rod hitbox to small rectangle that follows fishing line as it sink/rises continously
+ * 
+ * @todo SUGGESTIONS
+ * Have Bass swim from right to left (if they reach the end of left, game over?)
+ * 
  */
 
 import * as PIXI from './node_modules/pixi.js/dist/pixi.mjs';
@@ -41,16 +49,15 @@ pier.x = 0;
 pier.y = 350;
 app.stage.addChild(pier);
 
-
 class Bass extends PIXI.Sprite{
 
   // x/y coordinates, opt-in interactivity, texture
-  constructor(x, y, texture){
+  constructor(x, y, texture, container){
     super(texture);
     this.x = x;
     this.y = y;
     this.eventMode = 'static';
-    this.hitArea = new PIXI.Rectangle(this.x, this.y + 25, 97, 50);
+    this.hitArea = new PIXI.Rectangle(this.x - 20, this.y + container.y + 10, 97, 50);
 
     //TESTING PURPOSES
     this.viewHitArea(true);
@@ -69,37 +76,26 @@ class Bass extends PIXI.Sprite{
     }
   }
 
-  //gets x coordinate of bass sprite
-  getX(){
-    return this.x;
-  }
-
-  //gets x coordinate of bass sprite
-  getY(){
-    return this.y;
-  }
-  
   //gets hit area information of bass sprite
   //hit area is relative to stage, not sprite
   getHitAreaInfo(){
     return "x: " + this.hitArea.x + ", y: " + this.hitArea.y + ", width: " + this.hitArea.width + ", height: " + this.hitArea.height;
   }
 
-  //sets x coordinate of bass sprite
-  setX(newX){
-    this.x = newX;
-  }
-
-  //sets x coordinate of bass sprite
-  setY(newY){
-    this.y = newY;
-  }
-
 }
 
-//Bass image
-let bass = new Bass(400, 470, PIXI.Texture.from("./oceandrawings/BassOcean.png"));
-app.stage.addChild(bass);
+//Container to keep Bass behind Ocean
+let bassContainer = new PIXI.Container();
+bassContainer.x = 0;
+bassContainer.y = 500;
+bassContainer.width = 1500;
+bassContainer.height = 140;
+app.stage.addChild(bassContainer);
+
+let bassConHitArea = new PIXI.Graphics();
+bassConHitArea.lineStyle(5, 0xFF0000);
+bassConHitArea.drawRect(0, 0, 1500, 140);
+bassContainer.addChild(bassConHitArea);
 
 //Ocean image/animation
 const oceanFrames = [];
@@ -144,7 +140,6 @@ rodMeterAnim.animationSpeed = 0.2;
 rodMeterAnim.x = 450;
 rodMeterAnim.y = 270;
 rodMeterAnim.alpha = 0;
-rodMeterAnim.play();
 app.stage.addChild(rodMeterAnim);
 
 //Stage event handlers
@@ -153,13 +148,21 @@ app.stage.eventMode = "static";
 app.stage.on("pointermove", e => {
   rod.x = e.clientX - 70;
   rod.y = e.clientY - 70;
-  rod.hitArea.x = rod.x;
-  rod.hitArea.y = rod.y;
+  // rod.hitArea.x = rod.x;
+  // rod.hitArea.y = rod.y;
   rodMeterAnim.x = rod.x + 140;
   rodMeterAnim.y = rod.y;
+  // console.log(rod.hitArea.x);
 });
 
 app.stage.on("pointerdown", e => {
+  //change hit box to be above water
+  rodhit.x = 0;
+  rod.hitArea.x = rod.x;
+  rodhit.y = 0;
+  rod.hitArea.y = rod.y;
+
+  //make meter visible and play it from the start (just incase)
   setTimeout(() => {
     rodMeterAnim.alpha = 1;
     rodMeterAnim.currentFrame = 0;
@@ -168,31 +171,86 @@ app.stage.on("pointerdown", e => {
 });
 
 app.stage.on("pointerup", e => {
+  //stop meter animation for user to see and make it invisible
   rodMeterAnim.stop();
   setTimeout(() => {
     rodMeterAnim.alpha = 0;
   }, 300);
+
+  //changes hitbox to move to the right depending on the frame the meter stopped
+  switch (rodMeterAnim.currentFrame) {
+    case 0:
+    case 13:
+      rodhit.x += 10;
+      rod.hitArea.x = rod.x + 10;
+      break;
+    case 1:
+    case 12:
+      rodhit.x += 100;
+      rod.hitArea.x = rod.x + 100;
+      break;
+    case 2:
+    case 11:
+      rodhit.x += 200;
+      rod.hitArea.x = rod.x + 200;
+      break;
+    case 3:
+    case 10:
+      rodhit.x += 300;
+      rod.hitArea.x = rod.x + 300;
+      break;
+    case 4:
+    case 9:
+      rodhit.x += 400;
+      rod.hitArea.x = rod.x + 400;
+      break;
+    case 5:
+    case 8:
+      rodhit.x += 500;
+      rod.hitArea.x = rod.x + 500;
+      break;
+    case 6:
+    case 7:
+      rodhit.x += 600;
+      rod.hitArea.x = rod.x + 600;
+      break;
+  }
+
+  // console.log(rod.hitArea.x);
 });
 
 //loop that plays throughout the game
 function loop(){
+  //changes hitbox to move down overtime past the edge of the dock
+  if(rod.hitArea.x > 350 && rod.hitArea.y < 510){
+    rodhit.y += 0.5;
+    rod.hitArea.y += 0.5;
+  }
+
   //working hit box for Rod and Bass
-
-  //if fishing rod collides with a Bass class: destroy the bass
-  if(bass.destroyed){
-    return;
-  }
-  else if(rod.hitArea.x - bass.hitArea.x < 80 && rod.hitArea.x - bass.hitArea.x > -120 && rod.hitArea.y - bass.hitArea.y < 35  && rod.hitArea.y - bass.hitArea.y > -130){
-    bass.destroy();
-    
-  }
+  //for each bass in basses array: if bass collides with rod: destroy bass and add new bass
+  basses.forEach((b) => {
+    if(rod.hitArea.intersects(b.hitArea)){
+      b.destroy();
+      basses.splice(basses.indexOf(b), 1);
+      //ADD BASS
+    }
+  });
 }
-
 
 // mainMenu();
 // addPier();
 // addBass();
 // addOcean();
 // addFishingRod();
+
+
+
+
+//Bass image
+let bass = new Bass(400, 0, PIXI.Texture.from("./oceandrawings/BassOcean.png"), bassContainer);
+let newbass = new Bass(0, 30, PIXI.Texture.from("./oceandrawings/BassOcean.png"), bassContainer);
+bassContainer.addChild(bass, newbass);
+let basses = [bass, newbass];
 
 app.ticker.add((delta) => loop(delta));
