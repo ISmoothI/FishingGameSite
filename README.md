@@ -9,11 +9,13 @@ This project aims to create a relaxing fishing environment one click away. This 
 - Made using JavaScript and the [Pixi.js](https://github.com/pixijs/pixijs) library 📖
 - Drawings and animations are completely self made 🎨
 - It is playable and fine in its current state, but I may come back once in a while to add new features for fun 😲
+- No game overs so you can play to your hearts content 🛏️
 
-## 🎮 Controls
+## 🎮 Controls/Features
 - ![Fishing Rod](/oceandrawings/FishingRodOcean.png "Fishing Rod") **Mouse** - Moving the mouse will move the fishing rod 🎣
 - ![Fishing Rod Meter](/FishingRodMeterAnimation/FishingRodMeterOcean7.png "Fishing Rod Meter") **Hold Left Click** - Will cause a casting meter to appear 🚦
 - ![Fishing Rod Meter](/FishingRodMeterAnimation/FishingRodMeterOcean4.png "Fishing Rod Meter") **Release Left Click** - Will cast the hook to a certain distance depending on where the meter stops 🚦
+- ![Bass](/oceandrawings/BassOcean.png "Bass") - Bass will move from right to left of the screen (You will need to get as many as can!) 🐟
 
-## Special Thanks
+## ❤️ Special Thanks
 - Just want to say a special thank you to the team behind Pixi.js! This was a small side project that I enjoyed my time with and definitely learned quite a bit. 🎊
