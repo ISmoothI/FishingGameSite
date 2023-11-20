@@ -3,7 +3,7 @@
 
 This project aims to create a relaxing fishing environment one click away. This repository details the code necessary for the website to run together including the necessary rendering engine [Pixi.js](https://github.com/pixijs/pixijs) in order to create a seamless web browser gaming experience.
 
-❗ **Pixi.js will be needed to run this code.**
+❗ **Pixi.mjs v7.3.2 will be needed to run this code.**
 
 ## 🟢 Quick Breakdown
 - Made using JavaScript and the [Pixi.js](https://github.com/pixijs/pixijs) library 📖
