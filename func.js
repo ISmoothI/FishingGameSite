@@ -10,14 +10,14 @@
  * 
  */
 
-import * as PIXI from './pixi.mjs';
+// import * as PIXI from './pixi.mjs';
 
 // Create the application helper and add its render target to the page
 let app = new PIXI.Application({ background: "#1099bb", view: document.getElementById("mycanvas"), height: 650, width: 1500 });
 document.body.appendChild(app.view);
 // PIXI.settings.RESOLUTION = window.devicePixelRatio;
 
-//Main Menu text
+//Main Menu text (NOT ENABLED)
 function mainMenu(){
   
   let gameTitleStyle = new PIXI.TextStyle({
@@ -47,6 +47,7 @@ pier.x = 0;
 pier.y = 350;
 app.stage.addChild(pier);
 
+//Bass class for all related behaviour
 class Bass extends PIXI.AnimatedSprite{
 
   // x/y coordinates, opt-in interactivity, texture
