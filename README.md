@@ -19,3 +19,6 @@ This project aims to create a relaxing fishing environment one click away. This 
 
 ## ❤️ Special Thanks
 - Just want to say a special thank you to the team behind Pixi.js! This was a small side project that I enjoyed my time with and definitely learned quite a bit. 🎊
+
+## ⚖️ Licenses
+- [Pixi.js](https://github.com/pixijs/pixijs) - [MIT](https://github.com/pixijs/pixijs/blob/dev/LICENSE) License
