@@ -1,4 +1,4 @@
-# 🐟 Bass Fishing Bananza
+# 🐟 Bass Fishing Bonanza
 ![BackgroundOcean](/oceandrawings/BackgroundOceanMD.png "Background Ocean")
 
 This project aims to create a relaxing fishing environment one click away. This repository details the code necessary for the website to run together including the necessary rendering engine [Pixi.js](https://github.com/pixijs/pixijs) in order to create a seamless web browser gaming experience.
